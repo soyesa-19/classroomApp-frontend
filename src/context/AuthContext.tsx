@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState, useContext } from "react";
+import { getConfigs } from "../utils/common";
 
 type TUser = {
   firstName: string;
@@ -19,6 +20,7 @@ type TError = {
 
 type TAuthContext = {
   isAuthenticated: boolean;
+  token: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (userDetails: TUser) => Promise<void>;
   logout: () => void;
@@ -32,9 +34,11 @@ const AuthContext = createContext<TAuthContext | undefined>(undefined);
 
 export const AuthContextProvider = ({ children }: TProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(null);
+  const API_URL = getConfigs('VITE_API_URL')
 
   const login = async (email: string, password: string): Promise<void> => {
-    const response = await fetch("http://localhost:5000/api/auth/login", {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,12 +59,14 @@ export const AuthContextProvider = ({ children }: TProps) => {
     }
 
     const { token } = data;
-    localStorage.setItem("token", token);
     setIsAuthenticated(true);
+    setToken(token)
+    localStorage.setItem("token", token);
+
   };
 
   const register = async (userDetails: TUser): Promise<void> => {
-    const response = await fetch("http://localhost:5000/api/auth/register", {
+    const response = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,10 +93,10 @@ export const AuthContextProvider = ({ children }: TProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, register, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, login, register, logout }}>
       {children}
     </AuthContext.Provider>
-  );
+  )
 };
 
 export const useAuth = () => {
