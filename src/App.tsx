@@ -7,6 +7,7 @@ import Register from "./pages/auth/Register";
 import { AuthContextProvider } from "./context/AuthContext";
 import Logout from "./pages/auth/Logout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { SocketProvider } from "./context/SocketProvider";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,9 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <RouterProvider router={router} />
+        <SocketProvider>
+          <RouterProvider router={router} />
+        </SocketProvider>
       </AuthContextProvider>
     </>
   );

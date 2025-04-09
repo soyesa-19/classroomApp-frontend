@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }: TProps) => {
     if (!isAuthenticated) {
       navigate("/login");
     }
-  }, []);
+  }, [isAuthenticated, navigate]);
 
   return children;
 };

@@ -9,33 +9,42 @@ export function SocketProvider({ children }: React.PropsWithChildren) {
   const socketRef = React.useRef<Socket | null>(null);
   const [connected, setConnected] = React.useState(false);
 
-  const initialize = React.useCallback(() => {
-    if (socketRef.current) {
-      return;
-    }
-
-    const SOCKET_URL = `${getConfigs("VITE_API_URL")}`;
-    const socket = io(SOCKET_URL, {
-      auth: {
-        token,
-      },
-    });
-
-    // TODO: Handle connection errors
-    socket.on("connect", () => {
+  const { initialize, disconnect } = React.useMemo(() => {
+    function onConnect() {
       setConnected(true);
-    });
-    socket.on("disconnect", () => {
-      setConnected(false);
-    });
-    socketRef.current = socket;
-  }, [token]);
-
-  const disconnect = React.useCallback(() => {
-    if (socketRef.current?.connected) {
-      socketRef.current.disconnect();
     }
-  }, []);
+    function onDisconnect() {
+      setConnected(false);
+    }
+
+    return {
+      initialize: () => {
+        if (socketRef.current) {
+          return;
+        }
+
+        const SOCKET_URL = `${getConfigs("VITE_API_URL")}`;
+        const socket = io(SOCKET_URL, {
+          auth: {
+            token,
+          },
+        });
+
+        // TODO: Handle connection errors
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+        socketRef.current = socket;
+      },
+      disconnect: () => {
+        const socket = socketRef.current;
+        socketRef.current = null;
+        if (socket) {
+          socket.off("connect", onConnect);
+          socket.off("disconnect", onDisconnect);
+        }
+      },
+    };
+  }, [token]);
 
   const value = React.useMemo(
     () => ({ socket: socketRef.current, connected, initialize, disconnect }),
