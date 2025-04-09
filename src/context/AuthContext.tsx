@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useState, useContext } from "react";
 import { getConfigs } from "../utils/common";
+import React from "react";
 
 type TUser = {
   firstName: string;
@@ -33,9 +34,15 @@ type TProps = {
 const AuthContext = createContext<TAuthContext | undefined>(undefined);
 
 export const AuthContextProvider = ({ children }: TProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useState(null);
-  const API_URL = getConfigs('VITE_API_URL')
+  const [{ isAuthenticated, token }, setAuthState] = useState(() => {
+    const token = localStorage.getItem("token");
+
+    return {
+      token,
+      isAuthenticated: !!token,
+    };
+  });
+  const API_URL = getConfigs("VITE_API_URL");
 
   const login = async (email: string, password: string): Promise<void> => {
     const response = await fetch(`${API_URL}/api/auth/login`, {
@@ -59,10 +66,11 @@ export const AuthContextProvider = ({ children }: TProps) => {
     }
 
     const { token } = data;
-    setIsAuthenticated(true);
-    setToken(token)
+    setAuthState({
+      token,
+      isAuthenticated: !!token,
+    });
     localStorage.setItem("token", token);
-
   };
 
   const register = async (userDetails: TUser): Promise<void> => {
@@ -89,14 +97,16 @@ export const AuthContextProvider = ({ children }: TProps) => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    setIsAuthenticated(false);
+    setAuthState({ token: null, isAuthenticated: false });
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, token, login, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
-  )
+  );
 };
 
 export const useAuth = () => {
