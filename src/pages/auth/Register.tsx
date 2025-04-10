@@ -14,7 +14,7 @@ import {
   ErrorMessage,
   SuccessMessage,
 } from "../../components/styles/Auth.styled";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 
 const Register = () => {
   const firstNameRef = useRef<HTMLInputElement>(null);

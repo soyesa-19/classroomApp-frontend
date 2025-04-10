@@ -13,7 +13,7 @@ import {
   StyledLink,
   ErrorMessage,
 } from "../../components/styles/Auth.styled";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 
 const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
