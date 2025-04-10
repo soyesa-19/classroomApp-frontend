@@ -17,7 +17,6 @@ export const AuthContextProvider = ({ children }: TProps) => {
       isAuthenticated: !!token,
     };
   });
-  const API_URL = getConfigs("VITE_API_URL");
 
   const login = async (email: string, password: string): Promise<void> => {
     const { token } = await AuthService.login(email, password);
