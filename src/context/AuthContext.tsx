@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useState, useContext } from "react";
 import AuthService from "../services/AuthService";
-import { TUser, TAuthContext } from "../types/auth";
+import { User, AuthCtx } from "../types/auth";
 
 type TProps = {
   children: ReactNode;
 };
 
-export const AuthContext = createContext<TAuthContext | undefined>(undefined);
+export const AuthContext = createContext<AuthCtx | undefined>(undefined);
 
 export const AuthContextProvider = ({ children }: TProps) => {
   const [{ isAuthenticated, token }, setAuthState] = useState(() => {
@@ -27,7 +27,7 @@ export const AuthContextProvider = ({ children }: TProps) => {
     localStorage.setItem("token", token);
   };
 
-  const register = async (userDetails: TUser): Promise<void> => {
+  const register = async (userDetails: User): Promise<void> => {
     await AuthService.register(userDetails);
   };
 

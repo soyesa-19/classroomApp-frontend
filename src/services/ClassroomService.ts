@@ -1,9 +1,9 @@
-import { TClassroom } from "../types/classroom";
+import { Classroom } from "../types/classroom";
 import ApiService from "./ApiService";
 
 class ClassroomService {
-  static async getClasses(): Promise<TClassroom[]> {
-    return ApiService.get<TClassroom[]>("/api/classrooms");
+  static async getClasses(): Promise<Classroom[]> {
+    return ApiService.get<Classroom[]>("/api/classrooms");
   }
 }
 

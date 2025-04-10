@@ -1,4 +1,4 @@
-import { TUser } from "../types/auth";
+import { User } from "../types/auth";
 import ApiService from "./ApiService";
 
 class AuthService {
@@ -12,7 +12,7 @@ class AuthService {
     });
   }
 
-  static async register(userDetails: TUser): Promise<void> {
+  static async register(userDetails: User): Promise<void> {
     return ApiService.post<void>("/api/auth/register", userDetails);
   }
 

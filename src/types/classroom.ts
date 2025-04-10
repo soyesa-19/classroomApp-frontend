@@ -1,4 +1,4 @@
-export type TClassroom = {
+export type Classroom = {
   id: string;
   name: string;
   start_time: Date;

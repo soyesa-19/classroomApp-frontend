@@ -1,4 +1,4 @@
-import { TError } from "../types/auth";
+import { Error } from "../types/auth";
 import { getConfigs } from "../utils/common";
 
 const API_URL = getConfigs("VITE_API_URL") as string;
@@ -32,7 +32,7 @@ class ApiService {
     if (!response.ok) {
       if (data?.errors) {
         const errorMessage =
-          data?.errors?.map((error: TError) => error?.message).join(", ") ||
+          data?.errors?.map((error: Error) => error?.message).join(", ") ||
           "An unknown error occurred";
         throw new Error(errorMessage);
       } else {

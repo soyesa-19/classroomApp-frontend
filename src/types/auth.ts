@@ -1,12 +1,12 @@
-export type TAuthContext = {
+export type AuthCtx = {
   isAuthenticated: boolean;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (userDetails: TUser) => Promise<void>;
+  register: (userDetails: User) => Promise<void>;
   logout: () => void;
 };
 
-export type TError = {
+export type Error = {
   code: string;
   minimum: number;
   type: string;
@@ -16,7 +16,7 @@ export type TError = {
   path: string[];
 };
 
-export type TUser = {
+export type User = {
   firstName: string;
   lastName: string;
   email: string;
