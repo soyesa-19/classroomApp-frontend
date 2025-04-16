@@ -32,3 +32,18 @@ export type Session = {
   visibility: Visibility;
   classroomId: string;
 };
+
+export type UserSessionStatus = {
+  id: string;
+};
+
+export type Visibility = "open" | "restricted";
+
+export type Session = {
+  id: string;
+  status: "active" | "ended";
+  users: UserSessionStatus[];
+  maxUsers: number;
+  visibility: Visibility;
+  classroomId: string;
+};

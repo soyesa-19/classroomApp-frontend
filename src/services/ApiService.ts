@@ -1,3 +1,4 @@
+import { ErrorType } from "../types/auth";
 import { getConfigs } from "../utils/common";
 
 const API_URL = getConfigs("VITE_API_URL") as string;
@@ -16,12 +17,14 @@ class ApiService {
     const defaultHeaders = {
       "Content-Type": "application/json",
     };
+    const token = localStorage.getItem("token");
 
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: options.method || "GET",
       headers: {
         ...defaultHeaders,
         ...options.headers,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: options.body ? JSON.stringify(options.body) : undefined,
     });
@@ -31,7 +34,7 @@ class ApiService {
     if (!response.ok) {
       if (data?.errors) {
         const errorMessage =
-          data?.errors?.map((error: Error) => error?.message).join(", ") ||
+          data?.errors?.map((error: ErrorType) => error?.message).join(", ") ||
           "An unknown error occurred";
         throw new Error(errorMessage);
       } else {
