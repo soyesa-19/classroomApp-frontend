@@ -45,8 +45,8 @@ class ApiService {
     return data;
   }
 
-  static async get<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: "GET" });
+  static async get<T>(endpoint: string, data?: any): Promise<T> {
+    return this.request<T>(endpoint, { method: "GET", body: data });
   }
 
   static async post<T>(endpoint: string, data: any): Promise<T> {

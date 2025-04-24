@@ -1,16 +1,28 @@
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ClassroomService from "../../services/ClassroomService";
-import React from "react";
+import { useSessionEvents } from "../../hooks/useClassroomEvents";
+import { SessionScoreData } from "../../types/session-events";
+import { Session, Section } from "../../types/classroom";
+import Waitingroom from "../../components/classroom/Waitingroom";
+import UserList from "../../components/classroom/UserList";
+import { useTimer } from "../../hooks/useTimer";
+export type ClassroomPageProps = {
+  session: Session;
+  sections: Section[];
+  scores: SessionScoreData[];
+};
+
 const ClassroomPage = () => {
   const navigate = useNavigate();
-  const { classroomId } = useLocation().state;
+  const { users, joinSession } = useSessionEvents();
+  const { classroomId, navigatedFromPage, startTime } = useLocation().state;
+  const { timeLeft } = useTimer(startTime);
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending } = useMutation<ClassroomPageProps, Error, void>({
     mutationFn: () => ClassroomService.joinClassroom(classroomId),
-    onSuccess: () => {
-      console.log("Successfully joined classroom");
-    },
+    onSuccess: (data: ClassroomPageProps) => joinSession(data.session.id),
     onError: (error) => {
       console.error("Failed to join classroom:", error);
       navigate(-1);
@@ -19,8 +31,10 @@ const ClassroomPage = () => {
 
   // Call join API when component mounts
   React.useEffect(() => {
-    mutate();
-  }, [mutate]);
+    if (navigatedFromPage) {
+      mutate();
+    }
+  }, [mutate, navigatedFromPage]);
 
   if (isPending) {
     return (
@@ -29,11 +43,14 @@ const ClassroomPage = () => {
       </div>
     );
   }
+  const showWaitingroom = Object.keys(users).length < 5 && timeLeft > 0;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Classroom</h1>
-      {/* Add your classroom content here */}
+    <div className="p-4 flex flex-row justify-center gap-3 min-h-screen">
+      <div className=" w-full md:w-3/4 border border-border rounded-2xl p-2">
+        {showWaitingroom ? <Waitingroom timeLeft={timeLeft} /> : <p>Layout</p>}
+      </div>
+      <UserList users={users} />
     </div>
   );
 };

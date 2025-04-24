@@ -5,7 +5,13 @@ const JoinClassroomButton = ({ classroom }: { classroom?: Classroom }) => {
   return (
     <Link
       to={`/classroom/${classroom?.id}`}
-      state={{ navigatedFromPage: true, classroomId: classroom?.id }}
+      state={{
+        navigatedFromPage: true,
+        classroomId: classroom?.id,
+        startTime:
+          classroom?.startTime?._seconds &&
+          new Date(classroom?.startTime?._seconds * 1000),
+      }}
     >
       <button
         key={classroom?.id}

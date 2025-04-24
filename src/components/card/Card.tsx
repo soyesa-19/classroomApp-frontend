@@ -1,6 +1,6 @@
 import JoinClassroomButton from "../button/JoinClassroomButton";
 import { Classroom } from "../../types/classroom";
-import img from "../../assets/classroom.jpg";
+import img from "../../assets/images/classroom.jpg";
 
 const Card = ({ classroom }: { classroom: Classroom }) => {
   return (
@@ -18,7 +18,7 @@ const Card = ({ classroom }: { classroom: Classroom }) => {
         Description : This is a description
       </p>
       <p className="text-sm font-medium">
-        Time: {new Date(classroom?.start_time).toLocaleString()}
+        Time:{new Date(classroom.startTime._seconds * 1000).toLocaleString()}
       </p>
       <JoinClassroomButton classroom={classroom} />
     </div>

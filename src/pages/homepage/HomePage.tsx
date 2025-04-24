@@ -31,8 +31,8 @@ const HomePage = () => {
           {classes
             ?.sort(
               (a, b) =>
-                new Date(a.start_time).getTime() -
-                new Date(b.start_time).getTime()
+                new Date(a.startTime._seconds * 1000).getTime() -
+                new Date(b.startTime._seconds * 1000).getTime()
             )
             ?.map((classroom: Classroom) => (
               <Card classroom={classroom} />
