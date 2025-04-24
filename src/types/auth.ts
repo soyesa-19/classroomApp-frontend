@@ -6,7 +6,7 @@ export type AuthCtx = {
   logout: () => void;
 };
 
-export type Error = {
+export type ErrorType = {
   code: string;
   minimum: number;
   type: string;

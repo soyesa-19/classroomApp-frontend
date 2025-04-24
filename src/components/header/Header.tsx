@@ -1,6 +1,5 @@
-import Header from "../styles/Header.styled";
-import { StyledNavLink } from "../styles/NavLink.styled";
 import { useAuth } from "../../hooks/useAuth";
+import { NavLink } from "react-router-dom";
 
 const HeaderComponent = () => {
   const { isAuthenticated } = useAuth();
@@ -11,16 +10,27 @@ const HeaderComponent = () => {
       : { to: "/login", text: "LogIn" },
   ];
   return (
-    <Header>
-      <p>ClassRoom app</p>
+    <header className="flex justify-between items-center p-4 bg-sidebar-primary-foreground">
+      <p className=" text-primary text-2xl font-bold">ClassRoom app</p>
       <nav>
         <ul>
           {routes?.map(({ to, text }) => {
-            return <StyledNavLink to={to}>{text}</StyledNavLink>;
+            return (
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "mx-4 text-chart-5 text-xl"
+                    : "mx-4 text-sidebar-primary"
+                }
+                to={to}
+              >
+                {text}
+              </NavLink>
+            );
           })}
         </ul>
       </nav>
-    </Header>
+    </header>
   );
 };
 

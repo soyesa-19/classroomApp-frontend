@@ -8,6 +8,8 @@ import { AuthContextProvider } from "./context/AuthContext";
 import Logout from "./pages/auth/Logout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { SocketProvider } from "./context/SocketProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ClassroomPage from "./pages/classroom/ClassroomPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,10 @@ const router = createBrowserRouter([
             <HomePage />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/classroom/:id",
+        element: <ClassroomPage />,
       },
     ],
   },
@@ -38,13 +44,17 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <>
       <AuthContextProvider>
-        <SocketProvider>
-          <RouterProvider router={router} />
-        </SocketProvider>
+        <QueryClientProvider client={queryClient}>
+          <SocketProvider>
+            <RouterProvider router={router} />
+          </SocketProvider>
+        </QueryClientProvider>
       </AuthContextProvider>
     </>
   );

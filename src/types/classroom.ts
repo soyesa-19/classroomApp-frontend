@@ -9,10 +9,15 @@ export type Section = {
   durationInMinutes: number;
 };
 
+type FirestoreTimestamp = {
+  _seconds: number;
+  _nanoseconds: number;
+};
+
 export type Classroom = {
   id: string;
   name: string;
-  startTime: Date;
+  startTime: FirestoreTimestamp;
   duration: number; // in minutes
   status: "active" | "inactive";
   sections: string[];

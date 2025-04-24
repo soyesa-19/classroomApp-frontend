@@ -21,3 +21,9 @@ export type SessionScoreData = {
   sectionId: number;
   score: number;
 };
+
+export type SessionUserData = {
+  userId: string;
+  username: string;
+  timestamp: string;
+};
