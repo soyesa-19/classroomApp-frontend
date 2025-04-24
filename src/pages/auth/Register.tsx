@@ -23,7 +23,7 @@ const Register = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [success] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
