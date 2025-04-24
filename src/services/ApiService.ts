@@ -1,4 +1,3 @@
-import { Error } from "../types/auth";
 import { getConfigs } from "../utils/common";
 
 const API_URL = getConfigs("VITE_API_URL") as string;
