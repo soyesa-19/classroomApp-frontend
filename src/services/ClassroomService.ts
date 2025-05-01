@@ -1,4 +1,4 @@
-import { ClassroomPageProps } from "../pages/classroom/ClassroomPage";
+import { ClassroomPageProps } from "../types/classroom";
 
 import { Classroom } from "../types/classroom";
 import ApiService from "./ApiService";

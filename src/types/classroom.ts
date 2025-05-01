@@ -1,3 +1,5 @@
+import { SessionScoreData } from "./session-events";
+
 export type Visibility = "open" | "restricted";
 
 export type Section = {
@@ -9,7 +11,7 @@ export type Section = {
   durationInMinutes: number;
 };
 
-type FirestoreTimestamp = {
+export type FirestoreTimestamp = {
   _seconds: number;
   _nanoseconds: number;
 };
@@ -36,4 +38,11 @@ export type Session = {
   maxUsers: number;
   visibility: Visibility;
   classroomId: string;
+};
+
+export type ClassroomPageProps = {
+  session: Session;
+  sections: Section[];
+  scores: SessionScoreData[];
+  startTime: FirestoreTimestamp;
 };
