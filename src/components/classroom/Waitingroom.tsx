@@ -1,6 +1,23 @@
+import React from "react";
 import WaitingEmoji from "../../assets/gif/waiting-emoji.gif";
+import { useTimer } from "../../hooks/useTimer";
 
-const Waitingroom = ({ timeLeft }: { timeLeft: number }) => {
+const Waitingroom = ({
+  startTime,
+  setWaitingTime,
+}: {
+  startTime: string;
+  setWaitingTime: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  console.log(startTime);
+  const { timeLeft } = useTimer(startTime);
+
+  React.useEffect(() => {
+    if (timeLeft <= 0) {
+      setWaitingTime(true);
+    }
+  }, [setWaitingTime, timeLeft]);
+
   const formatTime = (seconds: number) => {
     const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
     const secs = String(seconds % 60).padStart(2, "0");
